@@ -3,31 +3,28 @@ import PathHandler
 import configparser
 import shutil
 import sys
+import os
 
 reader = configparser.ConfigParser()
 
 
 def resetConfig():
-	print(f"Couldn't find {PathHandler.relJoin('config.ini')}")
 	print('Creating default config file...')
-	shutil.copyfile(PathHandler.relJoin('Config', 'default_config.ini'), PathHandler.relJoin('config.ini'))
+	shutil.copyfile(PathHandler.relJoin('ConfigHandler', 'default_config.ini'), PathHandler.relJoin('config.ini'))
 
 
 if ArgumentHandler.resetConfig():
 	resetConfig()
 
 if ArgumentHandler.useDefaultOptions():
-	try:
-		reader.read(PathHandler.relJoin('ConfigHandler', 'default_config.ini'))
-	except:
+	if not os.path.exists(PathHandler.relJoin('ConfigHandler', 'config.ini')):
 		print('Could not find a default config file. Exiting...')
 		sys.exit()
+	reader.read(PathHandler.relJoin('ConfigHandler', 'default_config.ini'))
 else:
-	try:
-		reader.read(PathHandler.relJoin('config.ini'))
-	except FileNotFoundError:
+	if not os.path.exists(PathHandler.relJoin('config.ini')):
 		resetConfig()
-		reader.read(PathHandler.relJoin('config.ini'))
+	reader.read(PathHandler.relJoin('config.ini'))
 
 # General
 showWarning = reader.getboolean('General', 'show_warning')
