@@ -1,4 +1,4 @@
-# pyg2
+# pyg2 v0.1a
 
 Required packages
 - PyQt

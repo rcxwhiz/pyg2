@@ -1,6 +1,6 @@
-import ArgumentHandler
+import MessageHandler
 
-if ArgumentHandler.defaultArg():
-	print("Default argument triggered")
+MessageHandler.printStartup()
+
 
 print("Hello world")

@@ -1,0 +1,15 @@
+WARNING
+DO NOT EXECUTE CODE ON YOUR MACHINE THAT YOU DO NOT TRUST
+
+This program is meant to automate and simplify grading large amounts of Python code. Executing code that you have not
+read is dangerous. This program has the following features built in to make it safer:
+- phrase blacklist
+	phrases that are not allowed to be present in source code
+- package whitelist
+	packages that are allowed to be imported
+- function blacklist
+	functions that are not allowed to be used in source code
+These can be configured in the config file.
+
+If you do not trust the code on your machine, you should read it before running it, or adjust the security settings in
+the config. You are responsible for any damage caused by this program and any other programs it runs.
