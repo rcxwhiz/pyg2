@@ -18,3 +18,8 @@ def join(*args) -> str:
 	for arg in args:
 		result = os.path.join(result, arg)
 	return result
+
+
+def createIfNot(path: str) -> None:
+	if not os.path.exists(path):
+		os.makedirs(path)
