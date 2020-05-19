@@ -2,8 +2,6 @@ import MessageHandler
 import InputHandler
 import FileSelectionHandler
 import AssignmentHandler
-import PathHandler
-import os
 
 
 def main() -> None:
@@ -44,59 +42,19 @@ def grade() -> None:
 	assignmentOption = InputHandler.input_range(0, 5)
 
 	if assignmentOption == 1:
-		PathHandler.createIfNot(PathHandler.join(assignmentDir, "key-source"))
-		if len(os.listdir(PathHandler.join(assignmentDir, "key-source"))) == 1 and os.listdir(PathHandler.join(assignmentDir, "key-source"))[0].endswith(".py"):
-			keyFile = os.listdir(PathHandler.join(assignmentDir, "key-source"))[0]
-		else:
-			print("Choose a key file")
-			keyFile = FileSelectionHandler.getFile(title="Open Key File", filter_in="Python Files (*.py)", starting_dir=PathHandler.join(assignmentDir, 'key-source'))
-			if keyFile == "":
-				return None
-
-		testsDir = PathHandler.join(assignmentDir, "test-cases")
-		print(f"Using test cases from {testsDir}:")
-		PathHandler.createIfNot(testsDir)
-
-		if len(os.listdir(testsDir)) == 0:
-			print("A default test case will be made")
-			os.mkdir(testsDir)
-		else:
-			i = 1
-			for testCase in os.listdir(testsDir):
-				if os.path.isdir(testCase):
-					print(f"{i}) {testCase}")
-					i += 1
-		AssignmentHandler.generateKeyFiles(keyFile, testsDir)
+		AssignmentHandler.generateKeyFiles(assignmentDir)
 
 	if assignmentOption == 2:
-		if not os.path.exists(PathHandler.join(assignmentDir, "test-cases")) or not os.path.exists(PathHandler.join(assignmentDir, "key-output")) or len(os.listdir(PathHandler.join(assignmentDir, "test-cases"))) == 0 or len(os.listdir(PathHandler.join(assignmentDir, "key-output"))) == 0:
-			print("Cannot find test cases to export")
-			print(f"{PathHandler.join(assignmentDir, 'test-cases')} or {PathHandler.join(assignmentDir, 'key-output')} are empty or missing")
-			return None
-
-		casesToExport = []
-		for testCase in os.listdir(PathHandler.join(assignmentDir, "test-cases")):
-			if testCase in os.listdir(PathHandler.join(assignmentDir, "key-output")):
-				print(f"Include {testCase}?")
-				print("[1] yes")
-				print("[0] no")
-				if InputHandler.input_range(0, 1) == 1:
-					casesToExport.append(testCase)
-
-		if len(casesToExport) > 0:
-			AssignmentHandler.exportTestCases(assignmentDir, casesToExport)
+		AssignmentHandler.exportTestCases(assignmentDir)
 
 	if assignmentOption == 3:
-		for requiredFile in ["key-output", "test-cases", "ruberic.ini"]:
-			if not os.path.exists(PathHandler.join(assignmentDir, requiredFile)):
-				print(f"Could not find {PathHandler.join(assignmentDir, requiredFile)} which is requried")
-				return None
+		AssignmentHandler.autoGrade(assignmentDir)
 
 	if assignmentOption == 4:
-		print("help")
+		AssignmentHandler.manualGrade(assignmentDir)
 
 	if assignmentOption == 5:
-		print("help")
+		AssignmentHandler.viewReport(assignmentDir)
 
 	print("Returning to menu...")
 		
